@@ -1,0 +1,45 @@
+/* Import Poppins from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap');
+
+/* Apply base styles */
+body {
+  font-family: 'Poppins', 'Helvetica', sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 40px;
+  background-color: #f8f9fa;
+  color: #222;
+  /* Strong contrast for readability */
+}
+
+/* Typography */
+h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+p {
+  font-size: 1.2rem;
+  font-weight: 300;
+  color: #555;
+}
+
+/* Simple, squared-off buttons */
+button {
+  background-color: #222;
+  color: #fff;
+  padding: 10px 24px;
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  /* Slightly rounded corners */
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+button:hover {
+  background-color: #444;
+  /* Darker on hover */
+}
