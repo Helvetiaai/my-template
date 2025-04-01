@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Card Component</title>
+  
+  <!-- Load React and ReactDOM from CDN -->
+  <script crossorigin src="https://unpkg.com/react@19/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@19/umd/react-dom.development.js"></script>
+  
+  <!-- Load Babel for JSX transpilation -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  
+  <!-- Load Material UI -->
+  <script crossorigin src="https://unpkg.com/@mui/material@5.15.13/umd/material-ui.development.js"></script>
+  <script crossorigin src="https://unpkg.com/@emotion/react@11.11.4/dist/emotion-react.umd.min.js"></script>
+  <script crossorigin src="https://unpkg.com/@emotion/styled@11.11.4/dist/emotion-styled.umd.min.js"></script>
+  
+  <!-- Load the Inter font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+  
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f9fafb;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  
+  <script type="text/babel">
+    // Destructure components from Material UI
+    const {
+      Box,
+      Button,
+      Card,
+      CardContent,
+      CardActions,
+      CardMedia,
+      Container,
+      Typography,
+      createTheme,
+      ThemeProvider,
+      CssBaseline,
+    } = MaterialUI;
+    
+    // Create a theme instance
+    const theme = createTheme({
+      palette: {
+        primary: {
+          main: '#2563eb',
+        },
+        secondary: {
+          main: '#10b981',
+        },
+      },
+      typography: {
+        fontFamily: [
+          'Inter',
+          '-apple-system',
+          'BlinkMacSystemFont',
+          '"Segoe UI"',
+          'Roboto',
+          'sans-serif',
+        ].join(','),
+        button: {
+          textTransform: 'none',
+        },
+      },
+    });
+    
+    // Simple card component
+    function SimpleCard() {
+      return (
+        <Container maxWidth="sm">
+          <Box sx={{ my: 4 }}>
+            <Typography variant="h4" component="h1" gutterBottom sx={{ mb: 3 }}>
+              Simple Card Component
+            </Typography>
+            
+            <Card sx={{ mb: 4 }}>
+              <CardMedia
+                component="img"
+                height="200"
+                image="https://source.unsplash.com/random/1200x600/?nature"
+                alt="Nature"
+                sx={{ objectFit: 'cover' }}
+              />
+              <CardContent>
+                <Typography variant="h5" component="div" gutterBottom>
+                  Standalone HTML Card
+                </Typography>
+                <Typography variant="body1" color="text.secondary">
+                  This is a simple card component created in a standalone HTML file
+                  using Material UI. You can edit this directly and see changes without
+                  a build step.
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Button size="small" color="primary">Learn More</Button>
+                <Button size="small" variant="contained" color="primary">Action</Button>
+              </CardActions>
+            </Card>
+            
+            <Typography variant="body2" color="text.secondary" align="center">
+              Edit this file to experiment with MUI components without a build step.
+            </Typography>
+          </Box>
+        </Container>
+      );
+    }
+    
+    // Render with theme
+    ReactDOM.render(
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <SimpleCard />
+      </ThemeProvider>,
+      document.getElementById('root')
+    );
+  </script>
+</body>
+</html>
