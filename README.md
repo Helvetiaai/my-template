@@ -1,103 +1,86 @@
-# 🚀 Solo Developer Project Template
+### ✅ `README.md`
 
-Built for **personal use** → Prioritize **speed, simplicity, and working code** over perfect architecture.
+````md
+# ⚙️ Solo Dev Starter – Cursor Ready Template
 
----
+This template is built for **serious solo developers** who prioritize speed, structure, and clarity.  
+Designed for use with **Cursor**, Vite, MUI, Prisma, and modern tooling.  
+Ideal for launching small-to-mid projects without overengineering.
 
-## 🔹 1️⃣ Architecture & Code Organization
+## 🧠 Cursor & AI Instructions
 
-| **Principle**             | **Guideline** |
-|--------------------------|--------------|
-| **Single-file preference** | Keep components, logic, and styles together unless separation makes development easier. |
-| **Minimal abstractions**   | Avoid utility files, services, or helper functions **unless used 3+ times**. |
-| **No premature optimization** | Write working code first. Only optimize when performance becomes an issue. |
-| **Simple dependencies**    | Prefer built-in browser APIs and lightweight libraries over complex frameworks. |
+If you're an AI assistant (like Cursor), follow these expectations:
+- Respect modular structure and file semantics
+- Avoid overengineering — clarity > cleverness
+- Suggest reusable logic via hooks, helpers, or services when applicable
+- Inline code is acceptable only for trivial operations
+- Boost priority folders: `src/features`, `src/shared`, `prisma`, `doc`
 
----
+## 🧪 Development Principles (Updated)
 
-## 🔹 2️⃣ TypeScript Usage
+| Principle                              | When to Apply                                                                 |
+|----------------------------------------|--------------------------------------------------------------------------------|
+| ✅ Modular components with logic split | Break into small units if it improves clarity, reuse, or testing               |
+| ✅ Domain-driven naming                 | Names must reflect **purpose**, not technical type                             |
+| ✅ Inline logic only when trivial      | Extract logic if more than one line or reused, even locally                   |
+| ✅ Prefer `type` over `any`            | Use `any` only with `// TODO:` tags — aim for clarity not ceremony            |
+| ✅ Avoid typing gymnastics             | Don't overengineer generics, but never skip types where they clarify behavior |
+| ✅ Consistent file structure           | Every domain should follow a repeatable folder logic                          |
+| ✅ Context-aware grouping              | Group by **feature** or **domain**, not tech layer                            |
+| ✅ Extract hooks early                 | If logic is reused twice or grows complex, extract                            |
+| ✅ AI-first scaffolding                | Prefer predictable file names and structure to help Cursor do its job         |
 
-| **Principle**                   | **Guideline** |
-|--------------------------------|--------------|
-| **Use types for clarity, not perfection** | Use TypeScript **only when it makes code clearer**. |
-| **Avoid unnecessary complexity** | Skip generics, deep type hierarchies, and excessive type declarations. |
-| **Prefer `any` or `unknown` if needed** | If strict typing slows development, use `any` to move fast. |
-| **Inline types in components** | Only extract types to separate files if reused **3+ times**. |
+## 🗂 Folder Structure (Scaffold Example)
 
----
-
-## 🔹 3️⃣ Components & State Management
-
-| **Principle**                      | **Guideline** |
-|-----------------------------------|--------------|
-| **Bigger components over many small ones** | Avoid excessive splitting—favor fewer, self-contained components. |
-| **Simple state management**       | Prefer `useState` over Redux, Zustand, or Context unless state is deeply nested. |
-| **Inline handlers unless reused** | Keep event handlers inside components unless **used 3+ times**. |
-| **Co-locate logic**               | Keep logic within components unless it significantly improves readability. |
-
----
-
-## 🔹 4️⃣ Project Structure (Minimal & Practical)
-
-| **Category**          | **Guideline** |
-|----------------------|--------------|
-| **Components**       | Keep component-specific logic, types, and styles in the same file. |
-| **Hooks**            | Extract hooks **only when reused 3+ times**. |
-| **Utilities**        | Create utility functions **only when needed multiple times**. |
-| **Global constants** | Use a single `constants.ts` file **only if multiple files need it**. |
-| **Styling**          | Prefer **Tailwind** or **styled-components** over separate CSS files. |
-
-### 📁 **Example Folder Structure:**
-```bash
+```txt
 src/
-  components/        # UI components
-    ui/             # Reusable, stateless UI components
-    features/       # Feature-specific components
-  hooks/            # Only if used 3+ times
-  types/            # Only if needed
-  constants.ts      # Global constants (if multiple files use them)
-  utils.ts          # Utility functions (only when necessary)
+  features/
+    booking/
+      components/
+      hooks/
+      services/
+      types.ts
+  shared/
+    hooks/
+    types/
+    constants.ts
+    utils.ts
+  pages/
+    Home.tsx
+  App.tsx
+
+prisma/
+  schema.prisma
+  seed.ts
+
+doc/
+  planning.md
+  glossary.md
+````
+
+## 🚀 Quickstart
+
+```bash
+git clone https://github.com/Helvetiaai/my-template my-new-project
+cd my-new-project
+npm install
+npm run dev
 ```
 
----
+## 🧰 Recommended Tooling
 
-## 🔹 5️⃣ Development Philosophy: **Speed > Perfection**
+* [Cursor](https://cursor.sh) – AI-native editor with context injection
+* Vite – lightning-fast dev server
+* MUI – component styling and UI consistency
+* Prisma – typed DB schema with PostgreSQL
+* Tailwind (optional) – utility-first styling if MUI not used
 
-| **Mindset**                   | **Guideline** |
-|------------------------------|--------------|
-| **Working code > Perfect code** | Build something functional first. Polish later if needed. |
-| **Ship early, refine later**  | Done is better than perfect. |
-| **No overengineering**        | Avoid patterns that slow you down—favor direct, readable solutions. |
-| **Ignore best practices when they don’t help** | Best practices are for teams—**use what makes your work faster**. |
-| **Personal use first, scalability second** | Optimize **only if** you need to scale a project later. |
+## 🧠 Philosophy Recap
 
----
+* **Working clarity > clever abstraction**
+* **Velocity with structure beats premature optimization**
+* **Every file should teach the AI what it is and how it behaves**
 
-## 🚀 **Summary:**
-✅ **Favor bigger components, inline logic, and minimal files.**  
-✅ **Use TypeScript for clarity, not strict enforcement.**  
-✅ **No premature optimization—functional first, refine later.**  
-✅ **Keep state simple, avoid unnecessary abstractions.**  
-✅ **Ignore "best practices" if they slow you down.**  
+Start fast. Scale smart. Never fight your stack. ⚡
 
----
-
-## 🔹 How to Use This Template
-1. **Clone this template**:
-   ```sh
-   git clone https://github.com/YOUR_GITHUB_USERNAME/my-template-project.git my-new-project
-   cd my-new-project
-   ```
-
-2. **Install dependencies**:
-   ```sh
-   npm install
-   ```
-
-3. **Start the development server**:
-   ```sh
-   npm run dev
-   ```
-
-4. **Start building fast, without overthinking!** 🚀
-
+````
