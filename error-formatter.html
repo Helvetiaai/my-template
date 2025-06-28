@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>TS Error Formatter</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 1rem;
+        }
+
+        textarea,
+        pre {
+            width: 100%;
+            font-family: monospace;
+            padding: 0.75rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        textarea {
+            height: 180px;
+        }
+
+        pre {
+            background: #f4f4f4;
+            white-space: pre-wrap;
+        }
+
+        button {
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem 1rem 0;
+        }
+    </style>
+</head>
+
+<body>
+    <h3>Paste VS Code Error JSON</h3>
+    <textarea id="input" placeholder="Paste JSON here (Ctrl+V)"></textarea>
+    <div>
+        <button onclick="format()">Format Errors</button>
+        <button onclick="document.getElementById('input').value=''">Clear</button>
+    </div>
+
+    <h3>Formatted Output</h3>
+    <pre id="output">Your formatted output will appear here...</pre>
+
+    <script>
+        function format() {
+            try {
+                const raw = document.getElementById('input').value;
+                const errors = JSON.parse(raw);
+                const blocks = errors.map(err => {
+                    const file = err.resource.split(/[\\/]/).pop();
+                    const loc = `${file}:${err.startLineNumber}:${err.startColumn}`;
+                    const code = `TS${err.code}`;
+                    let summary = err.code === '2741'
+                        ? `Missing 'fields: Field[]' in { key, name, label, value, onChange: (e: CustomFieldChangeEvent) => void }`
+                        : err.code === '2345'
+                            ? `(e: ChangeEvent<HTMLInputElement>) => void ❌ not compatible with (e: ChangeEvent<HTMLInputElement> | CustomFieldChangeEvent) => void\n↳ CustomFieldChangeEvent lacks nativeEvent, currentTarget, etc.`
+                            : err.message;
+                    let msg = `${code} @ ${loc}\n→ ${summary}`;
+                    err.relatedInformation?.forEach(i => {
+                        const f = i.resource.split(/[\\/]/).pop();
+                        msg += `\n↳ Required in ${f}:${i.startLineNumber}:${i.startColumn}`;
+                    });
+                    return msg;
+                });
+                document.getElementById('output').innerText = "```ts\n" + blocks.join("\n\n") + "\n```";
+            } catch {
+                document.getElementById('output').innerText = '❌ Invalid JSON';
+            }
+        }
+    </script>
+</body>
+
+</html>
