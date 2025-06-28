@@ -1,0 +1,43 @@
+# Dependencies
+node_modules
+
+# Build outputs
+dist
+build
+coverage
+.next
+
+# Generated files
+shared/openapi-generated/**/*.js
+shared/openapi-generated/**/*.js.map
+backend/dist
+frontend/dist
+
+# Environment and config
+.env.local
+.env.production
+.env.staging
+
+# IDE and editor
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS and temp
+.DS_Store
+Thumbs.db
+tmp
+.turbo
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock

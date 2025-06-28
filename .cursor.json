@@ -1,0 +1,65 @@
+{
+  "$schema": "https://raw.githubusercontent.com/cursor-sh/cursor-config/main/schema.json",
+  "metadata": {
+    "description": "Fullstack Template - React + Vite + MUI + NestJS + Prisma with OpenAPI shared types",
+    "projectType": "fullstack",
+    "tags": ["cursor", "vite", "react", "mui", "nestjs", "prisma", "typescript", "openapi", "shared-types"]
+  },
+  "paths": {
+    "frontend/": {
+      "purpose": "React + Vite + MUI frontend application",
+      "priority": "high"
+    },
+    "backend/": {
+      "purpose": "NestJS backend (controllers, services, modules, DTOs)",
+      "priority": "high"
+    },
+    "prisma/": {
+      "purpose": "Database schema, migrations, seed logic",
+      "priority": "high"
+    },
+    "shared/": {
+      "purpose": "Generated OpenAPI types and API clients",
+      "priority": "high"
+    },
+    "docs/": {
+      "purpose": "Project documentation and development rules",
+      "priority": "medium"
+    },
+    "frontend/src/features/": {
+      "purpose": "Domain-specific feature modules",
+      "priority": "high"
+    },
+    "frontend/src/shared/": {
+      "purpose": "Shared components, hooks, services, and styles",
+      "priority": "high"
+    },
+    "backend/src/modules/": {
+      "purpose": "Feature modules with controllers, services, and DTOs",
+      "priority": "high"
+    },
+    "backend/src/common/": {
+      "purpose": "Shared utilities, decorators, interceptors",
+      "priority": "medium"
+    },
+    "backend/src/config/": {
+      "purpose": "Configuration modules and environment setup",
+      "priority": "medium"
+    },
+    ".cursor/rules/": {
+      "purpose": "Project-specific Cursor rule declarations",
+      "priority": "high"
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build",
+    "coverage",
+    ".next",
+    "tmp",
+    ".turbo",
+    "shared/openapi-generated/**/*.js",
+    "shared/openapi-generated/**/*.js.map"
+  ]
+}

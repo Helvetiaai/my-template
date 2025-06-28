@@ -1,0 +1,354 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: Full-stack aligned frontend rules for React + Vite + Tailwind + MUI projects
+globs:
+  - frontend/src/**/*.{ts,tsx}
+  - shared/openapi-generated/**/*.ts
+  - frontend/public/**/*.*
+alwaysApply: true
+---
+
+# Frontend Development Rules
+
+## Core Principles
+- Use React with TypeScript for type safety
+- Follow Material UI (MUI) design system strictly
+- Maintain bidirectional naming alignment with database schema and backend APIs
+- Import shared types from `shared/openapi-generated` for full-stack type safety
+- Use generated API clients for all backend communication
+- Follow component-based architecture with single responsibility
+
+## Tech Stack & Architecture
+- **Framework**: React 18+ with TypeScript
+- **Build Tool**: Vite for fast development and optimized builds
+- **UI Library**: Material UI (MUI) v7+ with custom theme
+- **Styling**: TailwindCSS (default) + colocated custom styles
+- **State Management**: React Context or Zustand for global state
+- **API Integration**: Generated clients from OpenAPI specification
+
+## Project Structure
+```
+frontend/
+├── src/
+│   ├── app/                # Global layout, theme, router, providers
+│   ├── features/           # Domain-specific feature modules
+│   │   └── {Feature}/
+│   │       ├── components/ # Feature-specific components
+│   │       ├── hooks/      # Custom hooks
+│   │       ├── services/   # Feature-specific services
+│   │       └── types/      # Feature-specific types
+│   ├── shared/             # Shared components, utilities, constants
+│   │   ├── components/     # Reusable UI components
+│   │   ├── hooks/          # Shared custom hooks
+│   │   ├── services/       # Shared services
+│   │   ├── styles/         # Shared styles and theme
+│   │   └── openapi-generated/ # Generated API types and clients
+│   ├── types/              # Global type definitions
+│   └── main.tsx
+├── public/
+└── index.html
+```
+
+## Naming Conventions & Alignment
+
+### Cross-Layer Consistency
+- **Component names must reflect backend entity names exactly**
+- **Component prop names must match DTO property names**
+- **API endpoint paths must align with component routing**
+- **Database field names must align with component data structures**
+
+### Frontend-Specific Naming
+- **Components**: PascalCase (`UserCard`, `OrderList`, `ProductDetail`)
+- **Component files**: PascalCase (`UserCard.tsx`, `OrderList.tsx`)
+- **Feature folders**: PascalCase (`UserProfile`, `OrderManagement`)
+- **Hooks**: camelCase with 'use' prefix (`useUserData`, `useOrderStatus`)
+- **Utilities**: camelCase (`formatCurrency`, `validateEmail`)
+
+### Backend Alignment
+- **Import all types from `shared/openapi-generated`**
+- **Use generated API client method names as-is**
+- **Match backend DTO property names in component props**
+- **Use backend entity names for component naming**
+
+## Component Design
+
+### Component Structure
+- Follow single responsibility principle
+- Separate presentational and container components
+- Use custom hooks for business logic
+- Implement proper prop validation with TypeScript
+- Use React.memo for performance optimization when needed
+
+### Component Requirements
+- All components must be keyboard accessible
+- Include proper ARIA labels and roles
+- Support screen reader navigation
+- Implement proper focus management
+- Use semantic HTML elements
+
+### Component Composition
+- Prefer composition over inheritance
+- Use render props or children props for flexibility
+- Implement proper error boundaries
+- Use React.Suspense for loading states
+- Handle empty states and error states
+
+## Material UI Integration
+
+### Theme Configuration
+- Centralize theme in `src/shared/styles/theme.ts`
+- Use MUI's theme customization for consistent styling
+- Define custom color palette and typography
+- Use spacing and breakpoint system consistently
+- Implement dark/light mode support
+
+### Typography System
+- Use Helvetica and Poppins font families
+- Implement full weight range (ExtraThin to Black or Condensed Black)
+- Use high contrast between font weights
+- Maintain consistent font sizes and line heights
+- Follow MUI typography scale
+
+### Component Usage
+- Use MUI components as foundation
+- Apply consistent elevation system
+- Use MUI's responsive grid system
+- Implement proper spacing with theme.spacing
+- Use MUI's button variants consistently
+
+## Styling Guidelines
+
+### Elevation System
+- Follow MUI elevation guidelines strictly
+- Use subtle shadows for outer layers
+- Apply progressively higher elevations for nested components
+- Group elements logically with clear elevation hierarchy
+- Avoid excessive layering
+
+### Border Radius
+- Use border radius of 1 for minimal, almost-square look
+- Apply consistently across cards, papers, and buttons
+- Maintain visual consistency with design system
+
+### Color Usage
+- Use theme colors for all styling
+- Implement proper contrast ratios for accessibility
+- Use semantic colors for status indicators
+- Maintain color consistency across components
+
+## Navigation & Layout
+
+### Navigation Requirements
+- Every component/page must include minimum navigation controls
+- Implement back button functionality
+- Include close button for modals
+- Provide submit action for forms
+- Use consistent navigation patterns
+
+### Layout Structure
+- Use MUI's responsive grid system
+- Implement proper breakpoint handling
+- Support mobile-first responsive design
+- Use MUI Mini Variant Drawer for sidebar navigation
+- Show icons when collapsed, icons + text when expanded
+
+### Routing
+- Use React Router for client-side routing
+- Implement proper route guards
+- Handle 404 and error pages
+- Use lazy loading for route components
+- Maintain clean URL structure
+
+## Form & Input Standards
+
+### Form Requirements
+- Use React Hook Form for form management
+- Implement proper form validation
+- Use MUI form components consistently
+- Handle form submission states
+- Provide clear error messages
+
+### Input Components
+- Use MUI's specialized input fields
+- Implement compact/dense input field height where applicable
+- Support field-specific variants (currency, numeric, percentage)
+- Include proper input validation
+- Use consistent input styling
+
+### Button Standards
+- Use MUI button variants: outlined, contained, text
+- Enforce button contrast via MUI variants
+- Implement proper button states and loading indicators
+- Use consistent button sizing and spacing
+
+### Form Validation
+- Implement client-side validation
+- Show validation errors clearly
+- Use TypeScript for type-safe form handling
+- Validate against backend DTOs
+- Handle async validation when needed
+
+## API Integration
+
+### Type Safety Requirements
+- Import all types from `shared/openapi-generated`
+- Use generated API clients for backend communication
+- Maintain full-stack type safety
+- Never manually define types that exist in shared
+- Use TypeScript strict mode
+
+### API Client Usage
+- Use generated API clients exclusively
+- Handle loading, success, and error states
+- Implement proper error handling
+- Use React Query or SWR for caching
+- Implement optimistic updates when appropriate
+
+### Data Fetching
+- Use custom hooks for API calls
+- Implement proper loading states
+- Handle error states gracefully
+- Use pagination for large datasets
+- Implement proper data caching
+
+### Error Handling
+- Handle API errors properly
+- Show appropriate error messages
+- Implement retry mechanisms
+- Provide offline support
+- Handle network errors
+
+## State Management
+
+### Local State
+- Use useState for component-local state
+- Use useReducer for complex local state
+- Implement proper state initialization
+- Handle state updates efficiently
+
+### Global State
+- Use React Context for simple global state
+- Use Zustand for complex state management
+- Implement proper state persistence
+- Handle state synchronization
+
+### State Requirements
+- Keep state as local as possible
+- Lift state up when needed
+- Use proper state update patterns
+- Implement state cleanup in useEffect
+
+## Performance Optimization
+
+### Optimization Requirements
+- Use React.memo for expensive components
+- Implement proper key props for lists
+- Use useMemo and useCallback appropriately
+- Lazy load components and routes
+- Optimize bundle size with code splitting
+
+### Performance Monitoring
+- Monitor component re-renders
+- Use React DevTools for profiling
+- Implement performance budgets
+- Monitor bundle size
+- Use lighthouse for performance audits
+
+## Accessibility
+
+### Accessibility Requirements
+- All elements must be keyboard accessible
+- Include proper ARIA labels and roles
+- Maintain high contrast for readability
+- Support screen reader navigation
+- Implement proper focus management
+
+### Accessibility Standards
+- Follow WCAG 2.1 AA guidelines
+- Test with screen readers
+- Ensure keyboard-only navigation
+- Implement proper color contrast
+- Use semantic HTML elements
+
+## Responsive Design
+
+### Responsive Requirements
+- Use MUI's responsive grid system
+- Implement mobile-first design
+- Support all screen sizes
+- Use proper breakpoint handling
+- Test on multiple devices
+
+### Responsive Patterns
+- Use responsive typography
+- Implement responsive spacing
+- Handle responsive navigation
+- Use responsive images
+- Implement touch-friendly interactions
+
+## UI Layout & Elevation
+
+### Layout Principles
+- Each view/component must include navigation logic
+- Implement logical visual hierarchy with elevation
+- Use MUI elevation levels properly
+- Use border to separate when depth is unclear
+
+### Card vs Paper Usage
+- **Paper**: Simple containers
+- **Card**: Structured content blocks (title/media/actions)
+- Apply proper elevation hierarchy
+- Use consistent spacing and padding
+
+### Elevation Guidelines
+- Outer container: low elevation (e.g., 1)
+- Nested: +1 elevation layer
+- Avoid unnecessary layering
+- Use borders for separation when elevation is unclear
+
+## Production Requirements
+
+### Build Optimization
+- Optimize bundle size
+- Implement code splitting
+- Use proper asset optimization
+- Implement caching strategies
+- Use CDN for static assets
+
+### Performance Requirements
+- Achieve lighthouse score of 90+
+- Implement proper loading states
+- Optimize images and assets
+- Use proper caching headers
+- Monitor performance metrics
+
+### Security Requirements
+- Sanitize user inputs
+- Implement proper CSP headers
+- Use HTTPS in production
+- Validate all data
+- Implement proper authentication
+
+## Component Library
+
+### Shared Components
+- Create reusable UI components
+- Document component APIs
+- Implement proper prop validation
+- Use consistent naming conventions
+- Maintain component consistency
+
+### Component Requirements
+- All components must be accessible
+- Include proper TypeScript types
+- Implement proper error handling
+- Use consistent styling
+- Follow design system guidelines
+
+---
+
+**Key Principles**: Always prioritize user experience, accessibility, and performance. Follow React and MUI best practices strictly. Use shared types for full-stack type safety. Implement proper error handling and loading states. Maintain consistent design system usage. Generate and use API clients for backend communication. Maintain bidirectional naming alignment with database and backend layers.

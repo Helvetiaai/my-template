@@ -1,0 +1,51 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: Project rule index and core development principles
+alwaysApply: false
+---
+
+# 🧱 Primary Rule Entry Point for Project Template
+
+This file acts as a rule index ("barrel") summarizing core coding principles and linking to rule modules.
+
+---
+
+## 🧭 Global Engineering Principles
+- **SOLID**: Write modular, maintainable, and extendable code
+- **DRY**: Avoid duplication — abstract shared logic
+- **ACID**: Ensure data integrity across services and storage
+- **KISS**: Keep implementations simple and clear
+- **YAGNI**: Avoid overengineering — implement only what’s needed
+- **SSOT**: Share types and models from a single source of truth
+
+---
+
+## 🔗 Modular Rule Files
+
+### 🔹 Frontend
+📄 `C:\Users\Ben\Projects\my-template\.cursor\rules\frontend.mdc`  
+- React + Vite + Tailwind + MUI
+- Full-stack alignment via OpenAPI-generated clients
+- Component-level accessibility and performance optimization
+
+### 🔹 Backend
+📄 `C:\Users\Ben\Projects\my-template\.cursor\rules\backend.mdc`  
+- NestJS with strict module/controller/service structure
+- Swagger-based shared typing and API contracts
+- Prisma schema alignment and transactional safety
+
+### 🔹 Structure
+📄 `C:\Users\Ben\Projects\my-template\.cursor\rules\structure.mdc`  
+- Bidirectional naming alignment (DB → API → UI)
+- Strict folder structure and naming enforcement
+- Environment, import/export, and shared type rules
+
+---
+
+> Use this file as a top-level view of how this project enforces consistent structure, style, and quality across all layers.
+
+

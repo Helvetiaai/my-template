@@ -1,0 +1,198 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: Full-stack structural conventions and naming alignment for scalable projects
+globs:
+  - backend/**/*.{ts,tsx}
+  - frontend/**/*.{ts,tsx}
+  - prisma/**/*.prisma
+  - shared/**/*.{ts,json}
+  - .env*
+  - tsconfig.json
+  - docs/**/*.md
+alwaysApply: true
+---
+
+# Structure Rules
+
+## Core Principles
+- Maintain bidirectional naming alignment across Database → Backend → Frontend layers
+- Generate and use shared types from OpenAPI specification for full-stack type safety
+- Follow modular architecture with clear domain separation
+- Implement proper separation of concerns across layers
+
+## Project Root Structure
+```
+project/
+├── .env                    # Environment variables
+├── .gitignore             # Git ignore patterns
+├── eslint.config.mjs      # ESLint configuration
+├── index.html             # Entry HTML file
+├── package-lock.json      # Dependency lock file
+├── package.json           # Root package configuration
+├── README.md              # Project documentation
+├── tsconfig.json          # TypeScript configuration
+├── backend/               # NestJS application
+├── docs/                  # Project documentation and rules
+├── frontend/              # React + Vite + MUI frontend
+├── prisma/                # Database schema and migrations
+└── shared/                # Generated API types and OpenAPI files
+```
+
+## Cross-Layer Naming Convention
+
+### Mandatory Naming Alignment
+- **Entity names must propagate from database schema to all layers without renaming**
+- **Database model names → Backend DTOs → API endpoints → Frontend components**
+- **Field names must match across all layers unless explicitly justified**
+- **File names must reflect entity names consistently**
+
+### Database → Backend → Frontend Flow
+1. **Database**: Define entity in `prisma/schema.prisma` (PascalCase model names)
+2. **Backend**: Create DTOs matching database fields exactly
+3. **API**: Use entity names in endpoint paths
+4. **Frontend**: Create components with matching entity names
+5. **Shared**: Generate types from OpenAPI, import in frontend
+
+### Naming Enforcement Rules
+- **Database models**: PascalCase (`User`, `OrderItem`)
+- **Database fields**: camelCase (`firstName`, `orderDate`)
+- **Backend modules**: kebab-case (`user-management`)
+- **Backend files**: kebab-case (`user.controller.ts`)
+- **Backend classes**: PascalCase (`UserController`)
+- **Frontend components**: PascalCase (`UserCard`)
+- **Frontend files**: PascalCase (`UserCard.tsx`)
+- **API endpoints**: kebab-case (`/user-management`)
+
+## Shared Layer Management
+
+### OpenAPI Workflow
+- Backend generates `swagger.json` on startup
+- Place generated `swagger.json` in `shared/` directory
+- Generate TypeScript types and API clients from `swagger.json`
+- Output all generated files to `shared/openapi-generated/`
+- Frontend imports exclusively from `shared/openapi-generated/`
+
+### Shared Types Enforcement
+- **Never manually define types that exist in shared**
+- **Import all API types from `shared/openapi-generated`**
+- **Use generated API clients for all backend communication**
+- **Regenerate shared types when backend changes**
+
+## Folder Structure Standards
+
+### Backend Structure
+```
+backend/
+├── src/
+│   ├── modules/           # Feature modules
+│   │   └── {module}/      # kebab-case module names
+│   │       ├── dto/       # Data Transfer Objects
+│   │       ├── entities/  # Prisma entities
+│   │       ├── {module}.controller.ts
+│   │       ├── {module}.service.ts
+│   │       └── {module}.module.ts
+│   ├── common/            # Shared utilities
+│   ├── config/            # Configuration modules
+│   ├── app.module.ts
+│   └── main.ts
+└── package.json
+```
+
+### Frontend Structure
+```
+frontend/
+├── src/
+│   ├── app/               # Global configuration
+│   ├── features/          # Domain-specific features
+│   │   └── {Feature}/     # PascalCase feature names
+│   │       ├── components/
+│   │       ├── hooks/
+│   │       ├── services/
+│   │       └── types/
+│   ├── shared/            # Shared components and utilities
+│   │   ├── components/    # Reusable UI components
+│   │   ├── hooks/         # Shared custom hooks
+│   │   ├── services/      # Shared services
+│   │   ├── styles/        # Shared styles and theme
+│   │   └── openapi-generated/ # Generated API types and clients
+│   ├── types/             # Global type definitions
+│   └── main.tsx
+├── public/
+└── package.json
+```
+
+### Prisma Structure
+```
+prisma/
+├── schema.prisma          # Database schema definition
+├── migrations/            # Database migration files
+├── seed.ts               # Database seeding script
+└── client/               # Generated Prisma client
+```
+### Shared Structure
+```
+shared/
+├── openapi-generated/     # Generated API types and clients
+│   ├── types/            # TypeScript type definitions
+│   ├── clients/          # Generated API clients
+│   └── models/           # Data models
+├── swagger.json          # OpenAPI specification
+└── index.ts              # Shared exports
+```
+
+## Environment Configuration
+
+### Environment Files
+- **Root**: `.env` - Shared environment variables
+- **Backend**: `backend/.env` - Backend-specific configuration
+- **Frontend**: `frontend/.env` - Frontend-specific configuration
+- **Development**: `.env.development` - Development-specific overrides
+- **Production**: `.env.production` - Production-specific overrides
+
+### Environment Variables
+- **Database**: Connection strings, credentials, pool settings
+- **API**: Base URLs, authentication keys, rate limiting
+- **Frontend**: API endpoints, feature flags, analytics keys
+- **Shared**: Common configuration across layers
+
+## Import/Export Guidelines
+
+### Backend Imports
+- Use absolute imports from `src/`
+- Import DTOs from dedicated `dto/` folders
+- Import services and controllers from module files
+- Use barrel exports sparingly
+
+### Frontend Imports
+- Import types from `shared/openapi-generated`
+- Use relative imports within features
+- Import shared components from `shared/components`
+- Use index files for clean imports
+
+### Shared Imports
+- Import generated types directly
+- Use generated API clients for backend communication
+- Import error models for proper error handling
+- Use shared constants for consistency
+
+## Quality Assurance
+
+### Code Quality
+- ESLint configuration for all layers
+- Prettier formatting for consistency
+- TypeScript strict mode enforcement
+- Conventional commit messages
+
+### Performance Requirements
+- Bundle size optimization
+- Database query optimization
+- API response time monitoring
+- Frontend performance metrics
+
+---
+
+**Key Principles**: Maintain bidirectional naming alignment across all layers. Use shared types for full-stack type safety. Generate and use OpenAPI specification for API documentation. Follow modular architecture for scalability. Implement proper separation of concerns. Ensure seamless integration between Database → Backend → Frontend layers.

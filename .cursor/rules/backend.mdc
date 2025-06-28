@@ -1,0 +1,267 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+---
+description: Backend rules for NestJS + Prisma projects with OpenAPI-based shared types
+globs:
+  - backend/src/**/*.{ts,tsx}
+  - prisma/**/*.prisma
+  - shared/openapi-generated/**/*.ts
+alwaysApply: true
+---
+
+# Backend Development Rules
+
+## Core Principles
+- Follow NestJS modular architecture strictly
+- Maintain bidirectional naming alignment with database schema and frontend components
+- Generate comprehensive Swagger documentation for shared type generation
+- Use DTOs for all data transfer operations
+- Implement proper validation and error handling
+
+## Tech Stack & Architecture
+- **Framework**: NestJS with TypeScript
+- **Database**: PostgreSQL with Prisma ORM
+- **Documentation**: Swagger/OpenAPI 3.0
+- **Validation**: class-validator with class-transformer
+
+## Project Structure
+```
+backend/
+├── src/
+│   ├── common/           # Shared utilities, decorators, interceptors
+│   ├── config/           # Configuration modules
+│   ├── modules/          # Feature modules (auth, users, etc.)
+│   │   └── {module}/
+│   │       ├── dto/      # Data Transfer Objects
+│   │       ├── entities/ # Prisma entities
+│   │       ├── {module}.controller.ts
+│   │       ├── {module}.service.ts
+│   │       └── {module}.module.ts
+│   ├── app.module.ts
+│   └── main.ts
+├── prisma/
+│   ├── schema.prisma
+│   └── seed.ts
+└── shared/openapi-generated/  # Generated API clients
+```
+
+## Naming Conventions & Alignment
+
+### Cross-Layer Consistency
+- **Entity names must match database model names exactly**
+- **DTO property names must match database field names**
+- **API endpoint paths must reflect entity names**
+- **Module names must use kebab-case and reflect entity domains**
+
+### Backend-Specific Naming
+- **Modules**: kebab-case (`user-management`, `order-processing`)
+- **Files**: kebab-case (`user.controller.ts`, `auth.service.ts`)
+- **Classes**: PascalCase (`UserController`, `AuthService`)
+- **DTOs**: PascalCase (`CreateUserDto`, `UpdateProductDto`)
+- **Services**: PascalCase with 'Service' suffix (`UserService`)
+- **Controllers**: PascalCase with 'Controller' suffix (`UserController`)
+
+### Database Alignment
+- **Import Prisma entities directly from generated client**
+- **Use database field names in DTOs without transformation**
+- **Match database enum names in backend enums**
+- **Use database model names for API resource paths**
+
+## DTO Management
+
+### DTO Naming Convention
+- `Create{Entity}Dto` - for POST requests
+- `Update{Entity}Dto` - for PATCH/PUT requests  
+- `{Entity}ResponseDto` - for API responses
+- `{Entity}QueryDto` - for GET query parameters
+
+### DTO Requirements
+- Always use `@ApiProperty()` decorators for Swagger documentation
+- Always use `class-validator` decorators for validation
+- Use `PartialType(CreateDto)` from `@nestjs/mapped-types` for update DTOs
+- Create specialized DTOs for complex operations (bulk operations, special queries)
+- Separate internal and external DTOs when needed
+
+### DTO Field Mapping
+- **Map database fields to DTO properties with identical names**
+- **Use camelCase for all DTO property names**
+- **Include validation decorators for all required fields**
+- **Document all properties with `@ApiProperty()`**
+
+## Swagger & OpenAPI Generation
+
+### Swagger Documentation Requirements
+- Generate `swagger.json` automatically on backend startup
+- Place generated `swagger.json` in `shared/` directory
+- Document all endpoints with `@ApiOperation`, `@ApiResponse`, `@ApiTags`
+- Document all DTOs with `@ApiProperty` decorators
+- Include comprehensive error response documentation
+
+### API Documentation Standards
+- Use `@ApiTags()` to group endpoints by domain
+- Use `@ApiOperation()` for endpoint descriptions
+- Use `@ApiResponse()` for all possible response scenarios
+- Include request/response examples where helpful
+- Document authentication requirements
+
+### Shared Types Generation
+- Use `swagger.json` as source for generating shared types and clients
+- Generate output to `shared/openapi-generated/` directory
+- Include TypeScript types, API clients, and error models
+- Never manually edit generated files - regenerate on backend changes
+
+## Database & Prisma Integration
+
+### Schema Requirements
+- Use `cuid()` for all ID fields (not auto-increment)
+- Include `createdAt` and `updatedAt` timestamps on all models
+- Use `@@map()` for table naming conventions
+- Use enums for status fields instead of strings
+- Add proper indexes for frequently queried fields
+- Use `deletedAt` field for soft deletes when needed
+
+### Prisma Client Usage
+- Import Prisma client in services for database operations
+- Use type-safe queries with proper error handling
+- Implement proper transaction handling for complex operations
+- Use Prisma's select and include for optimized queries
+
+### Migration Strategy
+- Always use `prisma migrate` for schema changes
+- Never use `prisma db push` in production
+- Test migrations in development before production
+- Backup database before running migrations
+
+## API Design
+
+### Controller Requirements
+- Use `@ApiTags()` to group endpoints by domain
+- Use `@ApiOperation()` for endpoint descriptions
+- Use `@ApiResponse()` for all possible response scenarios
+- Return DTOs, never raw entities
+- Implement proper HTTP status codes
+- Use pagination for list endpoints
+
+### Endpoint Naming
+- Use RESTful conventions: GET, POST, PUT, PATCH, DELETE
+- Use kebab-case for endpoint paths: `/user-management`, `/order-items`
+- Use plural nouns for resource collections: `/users`, `/orders`
+- Use singular nouns for individual resources: `/users/{id}`
+
+### Response Standards
+- Return consistent response structures
+- Use proper HTTP status codes (200, 201, 400, 401, 403, 404, 500)
+- Include error details in error responses
+- Implement proper pagination for list endpoints
+
+## Security
+
+### Authentication
+- Use JWT tokens with refresh tokens
+- Hash passwords with bcrypt (cost factor 12+)
+- Store secrets in environment variables
+- Implement rate limiting on authentication endpoints
+
+### Authorization
+- Use role-based access control with `@Roles()` decorator
+- Use resource-based authorization for user-specific data
+- Implement guards for protected endpoints
+- Use `@UseGuards()` decorators consistently
+
+### Security Headers
+- Implement CORS properly
+- Use helmet for security headers
+- Validate all input data
+- Sanitize user inputs
+
+## Error Handling
+
+### Global Exception Filter
+- Implement global exception filter for consistent error responses
+- Create custom exception classes for business logic errors
+- Log errors with appropriate context
+- Return proper HTTP status codes
+- Sanitize error messages in production
+
+### Error Response Format
+- Use consistent error response structure
+- Include status code, timestamp, and message
+- Provide meaningful error messages for debugging
+- Handle Prisma errors appropriately
+
+### Custom Exceptions
+- Create domain-specific exception classes
+- Use proper HTTP status codes for different error types
+- Include error codes for frontend handling
+- Log errors with sufficient context
+
+## Configuration
+
+### Environment Management
+- Use ConfigModule with validation
+- Validate all environment variables
+- Provide sensible defaults where appropriate
+- Use different configs for different environments
+- Never commit secrets to version control
+
+### Configuration Structure
+- Group related configuration in separate classes
+- Use validation decorators for all config properties
+- Provide type-safe configuration access
+- Use environment-specific configuration files
+
+## Performance
+
+### Optimization Requirements
+- Add database indexes for frequently queried fields
+- Implement pagination for list endpoints
+- Use caching for expensive operations
+- Optimize Prisma queries with select statements
+- Implement request/response compression
+
+### Caching Strategy
+- Use Redis for distributed caching
+- Cache frequently accessed data
+- Implement cache invalidation strategies
+- Use appropriate cache TTL values
+
+### Database Optimization
+- Use Prisma's select to limit returned fields
+- Implement proper database indexing
+- Use database transactions for complex operations
+- Monitor query performance
+
+## Module Organization
+
+### Module Structure Requirements
+- Each feature gets its own module in `src/modules/`
+- Module folders use kebab-case naming
+- Always create separate DTO files in `dto/` subfolder
+- Export only necessary services and controllers
+- Use proper dependency injection
+
+### Import/Export Guidelines
+- Export only what's needed from modules
+- Use forwardRef() for circular dependencies
+- Group imports logically (NestJS, third-party, local)
+- Use barrel exports sparingly and only for public APIs
+
+## Production Requirements
+
+### Deployment Checklist
+- Environment variables configured
+- Database migrations applied
+- Health checks implemented
+- Logging configured for production
+- Rate limiting enabled
+- CORS properly configured
+- Security headers implemented
+- API documentation accessible
+- Backup strategy in place
+
+---
+
+**Key Principles**: Always prioritize code clarity, maintainability, and security. Follow NestJS conventions strictly. Use DTOs for all data transfer. Implement proper validation and error handling. Document APIs comprehensively with Swagger. Maintain bidirectional naming alignment with database and frontend layers. Generate and use shared types for full-stack type safety.

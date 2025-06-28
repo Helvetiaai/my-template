@@ -1,0 +1,176 @@
+# Cursor Rule Definitions — applies globally unless overridden
+
+rules:
+  # Frontend Rules
+  - name: Frontend Component Naming & Structure
+    match: "frontend/src/**/*.{ts,tsx}"
+    severity: error
+    checks:
+      - "Component names must be PascalCase"
+      - "Component files must be PascalCase with .tsx extension"
+      - "Use named exports only (no default exports)"
+      - "Import types from shared/openapi-generated"
+      - "Use MUI components as foundation"
+
+  - name: Frontend Feature Organization
+    match: "frontend/src/features/**/*.{ts,tsx}"
+    severity: error
+    checks:
+      - "Feature folders must be PascalCase"
+      - "Organize by: components/, hooks/, services/, types/"
+      - "Use index.ts for clean exports"
+      - "Component prop names must match DTO property names"
+
+  - name: Frontend Shared Components
+    match: "frontend/src/shared/**/*.{ts,tsx}"
+    severity: warning
+    checks:
+      - "Shared components must be reusable"
+      - "Include proper TypeScript types"
+      - "Follow MUI design system"
+      - "Implement proper accessibility"
+
+  - name: Frontend Styling Standards
+    match: "frontend/src/**/*.{ts,tsx}"
+    severity: warning
+    checks:
+      - "Use TailwindCSS + colocated custom styles"
+      - "Centralize theme in src/shared/styles/theme.ts"
+      - "Use border radius of 1 for minimal look"
+      - "Follow MUI elevation guidelines"
+
+  # Backend Rules
+  - name: Backend Module Structure
+    match: "backend/src/modules/**/*.ts"
+    severity: error
+    checks:
+      - "Module folders must be kebab-case"
+      - "Organize by: dto/, entities/, *.controller.ts, *.service.ts, *.module.ts"
+      - "Use DTOs for all data transfer"
+      - "Controllers must not contain business logic"
+
+  - name: Backend Naming Conventions
+    match: "backend/src/**/*.ts"
+    severity: error
+    checks:
+      - "Files must be kebab-case"
+      - "Classes must be PascalCase"
+      - "DTOs must be PascalCase with Dto suffix"
+      - "Services must have Service suffix"
+      - "Controllers must have Controller suffix"
+
+  - name: Backend DTO Standards
+    match: "backend/src/**/dto/*.ts"
+    severity: error
+    checks:
+      - "Use @ApiProperty() decorators for Swagger"
+      - "Use class-validator decorators for validation"
+      - "DTO property names must match database fields"
+      - "Use PartialType for update DTOs"
+
+  - name: Backend API Documentation
+    match: "backend/src/**/*.controller.ts"
+    severity: warning
+    checks:
+      - "Use @ApiTags() to group endpoints"
+      - "Use @ApiOperation() for descriptions"
+      - "Use @ApiResponse() for all responses"
+      - "Return DTOs, never raw entities"
+
+  # Database Rules
+  - name: Prisma Schema Standards
+    match: "prisma/schema.prisma"
+    severity: error
+    checks:
+      - "Model names must be PascalCase"
+      - "Field names must be camelCase"
+      - "Use cuid() for ID fields"
+      - "Include createdAt and updatedAt timestamps"
+      - "Use enums for status fields"
+
+  # Shared Types Rules
+  - name: Shared Types Usage
+    match: "frontend/src/**/*.{ts,tsx}"
+    severity: error
+    checks:
+      - "Import types from shared/openapi-generated"
+      - "Never manually define types that exist in shared"
+      - "Use generated API clients for backend communication"
+
+  - name: Generated Files Protection
+    match: "shared/openapi-generated/**/*.ts"
+    severity: error
+    checks:
+      - "Do not manually edit generated files"
+      - "Regenerate on backend changes"
+      - "Import from index.ts in shared/openapi-generated"
+
+  # Cross-Layer Consistency
+  - name: Naming Alignment
+    match: "**/*.{ts,tsx,prisma}"
+    severity: error
+    checks:
+      - "Entity names must match across Database → Backend → Frontend"
+      - "Field names must propagate without renaming"
+      - "API endpoints must reflect entity names"
+      - "Component names must reflect backend entities"
+
+  # File Organization
+  - name: Project Structure
+    match: "**/*"
+    severity: warning
+    checks:
+      - "Follow modular architecture"
+      - "Maintain clear domain separation"
+      - "Use proper separation of concerns"
+      - "Organize by feature domains"
+
+  # Code Quality
+  - name: TypeScript Standards
+    match: "**/*.{ts,tsx}"
+    severity: error
+    checks:
+      - "Use TypeScript strict mode"
+      - "Implement proper type safety"
+      - "Use absolute imports appropriately"
+      - "Avoid circular dependencies"
+
+  - name: Import/Export Guidelines
+    match: "**/*.{ts,tsx}"
+    severity: warning
+    checks:
+      - "Export only what's needed"
+      - "Use barrel exports sparingly"
+      - "Group imports logically"
+      - "Use forwardRef() for circular dependencies"
+
+  # Documentation
+  - name: Documentation Standards
+    match: "docs/**/*.md"
+    severity: warning
+    checks:
+      - "Use consistent heading structure"
+      - "Include clear examples where needed"
+      - "Maintain up-to-date information"
+      - "Follow markdown best practices"
+
+  # Environment & Config
+  - name: Environment Management
+    match: ".env*"
+    severity: error
+    checks:
+      - "Never commit secrets to version control"
+      - "Use appropriate environment files"
+      - "Validate environment variables"
+      - "Provide sensible defaults"
+
+  # Build & Generated Files
+  - name: Build Artifacts
+    match: "**/*"
+    severity: warning
+    checks:
+      - "Exclude build outputs from version control"
+      - "Ignore generated files appropriately"
+      - "Clean up temporary files"
+      - "Use proper .gitignore patterns"
+
